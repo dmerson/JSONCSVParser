@@ -4,3 +4,7 @@ bin/
 .vs/CreateCampusLogicImportFile/v15/Server/sqlite3/storage.ide-shm
 .vs/CreateCampusLogicImportFile/v15/Server/sqlite3/storage.ide
 .vs/CreateCampusLogicImportFile/v15/Server/sqlite3/db.lock
+.vs/JSONCSVParser/v15/Server/sqlite3/storage.ide-wal
+.vs/JSONCSVParser/v15/Server/sqlite3/storage.ide-shm
+.vs/JSONCSVParser/v15/Server/sqlite3/storage.ide
+.vs/JSONCSVParser/v15/Server/sqlite3/db.lock

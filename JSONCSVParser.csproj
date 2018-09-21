@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{ECEC2AA0-CB54-4B3A-BCDB-0F0DDE3C7250}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>JSONCSVWriter</RootNamespace>
-    <AssemblyName>JSONCSVWriter</AssemblyName>
+    <RootNamespace>JSONCSVParser</RootNamespace>
+    <AssemblyName>JSONCSVParser</AssemblyName>
     <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
