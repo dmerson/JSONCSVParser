@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CreateCampusLogicImportFile", "CreateCampusLogicImportFile.csproj", "{ECEC2AA0-CB54-4B3A-BCDB-0F0DDE3C7250}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ECEC2AA0-CB54-4B3A-BCDB-0F0DDE3C7250}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECEC2AA0-CB54-4B3A-BCDB-0F0DDE3C7250}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECEC2AA0-CB54-4B3A-BCDB-0F0DDE3C7250}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECEC2AA0-CB54-4B3A-BCDB-0F0DDE3C7250}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1A31BF1C-602E-44F5-85DD-FA865138EF93}
+	EndGlobalSection
+EndGlobal
