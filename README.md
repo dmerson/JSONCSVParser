@@ -19,7 +19,7 @@ In the near future, the app will autodetect the last column of the sql statement
 It will also try to autodetect JSON in the data (nvarchar(max) and starts with "[{" and ends with "]]".
 Allow the deliminator to be changed via the app.config.
 
-#Current abilities tested
+# Current abilities tested
 
 This version has been tested with exporting a table from SQL with 43K records and 60 columns for 110MB file size within 30 seconds.
 
