@@ -12,9 +12,12 @@ namespace CreateCampusLogicImportFile
 {
     class Program
     {
-        private static bool IsJsonColumn(DataColumn column)
+       
+       
+
+        private static bool IsCommaPresent(string columnValue)
         {
-            return column.ColumnName.Contains(System.Configuration.ConfigurationManager.AppSettings["jsonColumnKeyword"]);//"json");
+            return columnValue.Contains(",");
         }
         static void Main(string[] args)
         {
@@ -65,7 +68,7 @@ namespace CreateCampusLogicImportFile
                                 foreach (DataColumn column in dt.Columns)
                                 {
                                     
-                                    if (IsJsonColumn(column))
+                                    if (IsCommaPresent(row[column.ColumnName].ToString()))
                                     {
                                        //JSON Columns start and end with single Quote and need to double each quote within JSON
                                         fileString.Append(singleQuote);
@@ -76,7 +79,7 @@ namespace CreateCampusLogicImportFile
                                     else
                                     {
                                         
-                                        fileString.Append(row[column.ColumnName].ToString().Replace(columnDeliminator, commaDeliminatorReplace));
+                                        fileString.Append(row[column.ColumnName].ToString());
                                     }
                                     if (column.ColumnName != lastColumnName)
                                     {
