@@ -27,7 +27,7 @@ namespace CreateCampusLogicImportFile
             string doubleQuote = "\"\"";
             string endOfLIne = "\r\n";
             var sqlStatement = System.Configuration.ConfigurationManager.AppSettings["sql"];
-            string lastColumnName = System.Configuration.ConfigurationManager.AppSettings["lastColumnName"];
+            string lastColumnName ="";
             string finalFilePath = System.Configuration.ConfigurationManager.AppSettings["finalFilePath"];
             var columnDeliminator = ",";
             var commaDeliminatorReplace = ";";
@@ -47,7 +47,9 @@ namespace CreateCampusLogicImportFile
                         {
                             sda.Fill(dt);
                             var fileString = new StringBuilder();
-                            
+                            var lastColumnNumber = dt.Columns.Count-1;
+                            lastColumnName = dt.Columns[lastColumnNumber].ColumnName;
+
                             foreach (DataColumn column in dt.Columns)
                             {
                                 
