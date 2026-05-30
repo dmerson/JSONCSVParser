@@ -1,10 +1,7 @@
-﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
 using System.Text;
 
 
@@ -12,97 +9,74 @@ namespace CreateCampusLogicImportFile
 {
     class Program
     {
-       
-       
-
         private static bool IsCommaPresent(string columnValue)
         {
             return columnValue.Contains(",");
         }
+
         static void Main(string[] args)
         {
-            
-            string connectionString= System.Configuration.ConfigurationManager.ConnectionStrings["IntendedServer"].ConnectionString;
-            string singleQuote = "\"";
-            string doubleQuote = "\"\"";
-            string endOfLIne = "\r\n";
+            string connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["IntendedServer"].ConnectionString;
+            string csvQuote = "\"";
+            string escapedQuote = "\"\"";
+            string endOfLine = "\r\n";
             var sqlStatement = System.Configuration.ConfigurationManager.AppSettings["sql"];
-            string lastColumnName ="";
             string finalFilePath = System.Configuration.ConfigurationManager.AppSettings["finalFilePath"];
-            var columnDeliminator = ",";
-            var commaDeliminatorReplace = ";";
+            var columnDelimiter = ",";
+
             using (SqlConnection con = new SqlConnection(connectionString))
             {
                 Console.WriteLine(DateTime.Now);
-                
-                using (SqlCommand cmd = new SqlCommand(sqlStatement))
+
+                using (SqlCommand cmd = new SqlCommand(sqlStatement, con))
                 {
-                    cmd.CommandTimeout =(int.Parse(System.Configuration.ConfigurationManager.AppSettings["commandTimeout"]));
-                    using (SqlDataAdapter sda = new SqlDataAdapter())
+                    cmd.CommandTimeout = int.Parse(System.Configuration.ConfigurationManager.AppSettings["commandTimeout"]);
+                    con.Open();
+
+                    using (var writer = new StreamWriter(finalFilePath, false, Encoding.UTF8))
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        cmd.Connection = con;
-                        sda.SelectCommand = cmd;
-                        
-                        using (DataTable dt = new DataTable())
+                        int lastColumnIndex = reader.FieldCount - 1;
+
+                        // Write header row
+                        for (int i = 0; i <= lastColumnIndex; i++)
                         {
-                            sda.Fill(dt);
-                            var fileString = new StringBuilder();
-                            var lastColumnNumber = dt.Columns.Count-1;
-                            lastColumnName = dt.Columns[lastColumnNumber].ColumnName;
+                            writer.Write(reader.GetName(i));
+                            if (i < lastColumnIndex)
+                                writer.Write(columnDelimiter);
+                        }
+                        writer.Write(endOfLine);
 
-                            foreach (DataColumn column in dt.Columns)
+                        // Write data rows
+                        while (reader.Read())
+                        {
+                            for (int i = 0; i <= lastColumnIndex; i++)
                             {
-                                
-                                fileString.Append(column.ColumnName);
-                                if (column.ColumnName != lastColumnName)
+                                string value = reader.IsDBNull(i) ? "" : reader.GetValue(i).ToString();
+
+                                if (IsCommaPresent(value))
                                 {
-                                    fileString.Append(columnDeliminator);
+                                    // Wrap in double-quotes and escape any inner double-quotes
+                                    writer.Write(csvQuote);
+                                    writer.Write(value.Replace(csvQuote, escapedQuote));
+                                    writer.Write(csvQuote);
                                 }
-                                
-                            }
-
-                         
-                            
-                            fileString.Append(endOfLIne);
-                            
-                            foreach (DataRow row in dt.Rows)
-                            {
-                                foreach (DataColumn column in dt.Columns)
+                                else
                                 {
-                                    
-                                    if (IsCommaPresent(row[column.ColumnName].ToString()))
-                                    {
-                                       //JSON Columns start and end with single Quote and need to double each quote within JSON
-                                        fileString.Append(singleQuote);
-                                       
-                                        fileString.Append(row[column.ColumnName].ToString().Replace(singleQuote, doubleQuote));
-                                        fileString.Append(singleQuote);
-                                    }
-                                    else
-                                    {
-                                        
-                                        fileString.Append(row[column.ColumnName].ToString());
-                                    }
-                                    if (column.ColumnName != lastColumnName)
-                                    {
-                                        fileString.Append(columnDeliminator);
-                                    }
+                                    writer.Write(value);
                                 }
 
-                                
-                                fileString.Append(endOfLIne);
+                                if (i < lastColumnIndex)
+                                    writer.Write(columnDelimiter);
                             }
-                            File.WriteAllText(finalFilePath, fileString.ToString());
-                         
+                            writer.Write(endOfLine);
                         }
                     }
                 }
             }
+
             Console.WriteLine(DateTime.Now);
             Console.WriteLine("Done");
-            //Console.Read();
         }
-
-       
     }
 }
